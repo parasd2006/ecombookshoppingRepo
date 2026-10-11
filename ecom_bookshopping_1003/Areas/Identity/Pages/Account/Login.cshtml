@@ -1,0 +1,125 @@
+@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log In - BookKart";
+}
+
+<div class="row justify-content-center py-4">
+    <div class="col-12 col-md-8 col-lg-5">
+
+        <!-- Auth Card -->
+        <div class="card border-0 shadow-sm rounded-3 overflow-hidden bg-white">
+            <div class="card-header bg-fk-navy text-white text-center py-4 border-0">
+                <div class="brand-icon-box mx-auto mb-2 bg-primary text-white rounded d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                    <i class="fa-solid fa-book-open fs-4"></i>
+                </div>
+                <h4 class="fw-bold mb-1">Welcome Back to BookKart</h4>
+                <p class="fs-7 text-slate-300 mb-0">Sign in to access your orders, wishlist, and recommendations</p>
+            </div>
+
+            <div class="card-body p-4 p-lg-5">
+                <form id="account" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3 fs-7" role="alert"></div>
+
+                    <!-- Email/Phone Field (Verification send hote hi readonly ho jayegi taaki change na ho sake) -->
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.EmailOrPhone" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com / 9876543210" readonly="@(Model.ShowResendVerification)" />
+                        <label asp-for="Input.EmailOrPhone">Email or Mobile Phone Number</label>
+                        <span asp-validation-for="Input.EmailOrPhone" class="text-danger fs-8"></span>
+                    </div>
+
+                    @if (!Model.ShowResendVerification)
+                    {
+                        <!-- 👉 YEH PASSWORD WALA POORA SECTION SIRF SHURUAT ME DIKHEGA -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.Password">Password</label>
+                            <span asp-validation-for="Input.Password" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4 fs-7">
+                            <div class="form-check">
+                                <input class="form-check-input" asp-for="Input.RememberMe" style="cursor: pointer;" />
+                                <label asp-for="Input.RememberMe" class="form-check-label text-dark" style="cursor: pointer;">
+                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                </label>
+                            </div>
+                            <a id="forgot-password" asp-page="./ForgotPassword" class="text-primary text-decoration-none fw-medium">Forgot Password?</a>
+                        </div>
+
+                        <div>
+                            <button id="login-submit" type="submit" class="w-100 btn btn-fk-buy btn-lg py-3 rounded-3 fs-6">Sign In</button>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- 👉 LINK SEND HOTE HI PASSWORD BOX HAT GAYA, SIRF RESEND BUTTON DIKHEGA -->
+                        <div>
+                            <button type="submit" asp-page-handler="SendVerificationEmail" class="w-100 btn btn-lg btn-warning fw-bold py-3 mb-2">
+                                Resend Confirmation Email
+                            </button>
+                            <a asp-page="./Login" class="w-100 btn btn-outline-secondary py-2 d-block text-center">Back to Sign In</a>
+                        </div>
+                    }
+
+                    <div class="text-center mt-4 pt-3 border-top fs-7">
+                        <span class="text-muted">Don't have an account yet?</span>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-primary text-decoration-none fw-bold ms-1">Create an Account</a>
+                    </div>
+                </form>
+
+                @if (!Model.ShowResendVerification && (Model.ExternalLogins?.Count ?? 0) > 0)
+                {
+                    <div class="mt-4 pt-3 border-top text-center">
+                        <span class="fs-8 text-muted uppercase tracking-wider d-block mb-3">OR SIGN IN WITH</span>
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <div class="d-flex justify-content-center gap-2">
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm px-3" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                        @if (provider.Name == "Facebook")
+                                        {
+                                            <i class="fa-brands fa-facebook-f text-primary me-1"></i>
+                                        }
+                                        else if (provider.Name == "Google")
+                                        {
+
+                                            <i class="fa-brands fa-google text-danger me-1"></i>
+                                        }
+                                        else if (provider.Name == "Amazon")
+                                        {
+
+                                            <i class="fa-brands fa-amazon me-1"></i>
+                                        }
+                                        else if (provider.Name == "LinkedIn")
+                                        {
+
+                                            <i class="fa-brands fa-linkedin me-1"></i>
+                                        }
+                                        else if (provider.Name == "GitHub")
+                                        {
+
+                                            <i class="fa-brands fa-github me-1"></i>
+                                        }
+                                        else if (provider.Name == "Twitter")
+                                        {
+
+                                            <i class="fa-brands fa-twitter text-info me-1"></i>
+                                        }
+                                        @provider.DisplayName
+                                    </button>
+                                }
+                            </div>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

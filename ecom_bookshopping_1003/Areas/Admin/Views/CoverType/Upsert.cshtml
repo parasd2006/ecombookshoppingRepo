@@ -1,0 +1,52 @@
+@model ecom_bookshopping_1003.Models.CoverType
+@{
+    var title = Model.Id != 0 ? "Edit Cover Type" : "New Cover Type";
+    ViewData["Title"] = title + " - Admin";
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-5">
+            <div class="card-header bg-white border-bottom py-3 px-4 d-flex align-items-center justify-content-between">
+                <h4 class="fw-extrabold text-dark mb-0">
+                    <i class="fa-solid fa-book-bookmark text-primary me-2"></i> @title
+                </h4>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm font-semibold">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Back to List
+                </a>
+            </div>
+
+            <div class="card-body p-4">
+                <form method="post">
+                    @if (Model.Id != 0)
+                    {
+                        <input type="hidden" asp-for="Id" />
+                    }
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3 fs-7"></div>
+
+                    <div class="mb-4">
+                        <label asp-for="Name" class="form-label fw-bold text-dark fs-7">Cover Type Name</label>
+                        <input asp-for="Name" class="form-control py-2" placeholder="e.g. Hardcover, Paperback, Audiobook, Kindle Edition" />
+                        <span asp-validation-for="Name" class="text-danger fs-8"></span>
+                    </div>
+
+                    <div class="mt-4">
+                        @if (Model.Id != 0)
+                        {
+                            <partial name="_EditAndBackToListButton" />
+                        }
+                        else
+                        {
+                            <partial name="_CreateAndBackToListButton" />
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,306 @@
+@using ecom_bookshopping_1003.Utility
+@inject IHttpContextAccessor httpContextAccessor
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>@ViewData["Title"] - BookKart | India's Premier Online Bookstore</title>
+
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ecom_bookshopping_1003.styles.css" asp-append-version="true" />
+
+    <!-- External Libraries CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+</head>
+<body class="bg-light-app pb-5 pb-md-0">
+
+    @{
+        var cartCount = httpContextAccessor.HttpContext?.Session.GetInt32(SD.Ss_CartSessionCount) ?? 0;
+        var wishlistCount = httpContextAccessor.HttpContext?.Session.GetInt32("WishlistSessionCount") ?? 0;
+    }
+
+    <!-- Top Main Header (Amazon / Flipkart Style Sticky Header) -->
+    <header class="sticky-top shadow-sm z-3">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-fk-navy py-2 border-bottom border-navy-light">
+            <div class="container-fluid px-3 px-lg-5">
+
+                <!-- Brand Logo -->
+                <a class="navbar-brand d-flex align-items-center me-2 me-lg-4" asp-area="" asp-controller="Home" asp-action="Index">
+                    <div class="brand-icon-box me-2 bg-primary text-white rounded d-flex align-items-center justify-content-center" style="width: 34px; height: 34px;">
+                        <i class="fa-solid fa-book-open fs-6"></i>
+                    </div>
+                    <div>
+                        <span class="fw-bold tracking-tight text-white fs-5">Book<span class="text-fk-yellow">Kart</span></span>
+                        <span class="d-block fs-9 text-slate-300 italic opacity-75 d-none d-sm-block" style="margin-top:-6px;">Explore <span class="text-fk-yellow fw-bold">Plus</span> <i class="fa-solid fa-plus text-fk-yellow fs-9"></i></span>
+                    </div>
+                </a>
+
+                <!-- Mobile Right Icons Widget -->
+                <div class="d-flex align-items-center gap-2 d-lg-none ms-auto me-2">
+                    <!-- Mobile Wishlist Icon -->
+                    <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index" class="btn btn-fk-cart text-white p-2 rounded-circle position-relative d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                        <i class="fa-regular fa-heart fs-6 text-fk-yellow"></i>
+                        @if (wishlistCount > 0)
+                        {
+                            <span class="position-absolute top-0 start-100 translate-middle badge bg-warning text-dark font-mono rounded-pill fw-extrabold fs-9">
+                                @wishlistCount
+                            </span>
+                        }
+                    </a>
+
+                    <!-- Mobile Cart Icon -->
+                    <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="btn btn-fk-cart text-white p-2 rounded-circle position-relative d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                        <i class="fa-solid fa-cart-shopping fs-6 text-fk-yellow"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge bg-warning text-dark font-mono rounded-pill fw-extrabold fs-9">
+                            @cartCount
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Mobile Navbar Toggler Button -->
+                <button class="navbar-toggler border-0 p-1 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMainContent" aria-controls="navbarMainContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Collapsible Navbar Content -->
+                <div class="collapse navbar-collapse mt-2 mt-lg-0" id="navbarMainContent">
+
+                    <!-- Left Navigation Links -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
+                        <li class="nav-item">
+                            <a class="nav-link text-white fw-medium px-3 active" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="fa-solid fa-house me-1 text-slate-400"></i> Home
+                            </a>
+                        </li>
+
+                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                        {
+                            <li class="nav-item dropdown ms-lg-2">
+                                <a class="nav-link dropdown-toggle text-white fw-medium px-3 bg-navy-hover rounded" href="#" id="adminManageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-sliders me-1 text-fk-yellow"></i> Content Management
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark border-0 shadow-lg" aria-labelledby="adminManageDropdown">
+                                    <li><a class="dropdown-item py-2" asp-area="Admin" asp-controller="Category" asp-action="Index"><i class="fa-solid fa-list-check me-2 text-primary"></i> Categories</a></li>
+                                    <li><a class="dropdown-item py-2" asp-area="Admin" asp-controller="CoverType" asp-action="Index"><i class="fa-solid fa-book-bookmark me-2 text-info"></i> Cover Types</a></li>
+                                    <li><a class="dropdown-item py-2" asp-area="Admin" asp-controller="Product" asp-action="Index"><i class="fa-solid fa-book me-2 text-warning"></i> Products / Books</a></li>
+                                </ul>
+                            </li>
+                        }
+
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            <li class="nav-item dropdown ms-lg-1">
+                                <a class="nav-link dropdown-toggle text-white fw-medium px-3 bg-navy-hover rounded" href="#" id="adminUsersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-users-gear me-1 text-fk-yellow"></i> User & Enterprise
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark border-0 shadow-lg" aria-labelledby="adminUsersDropdown">
+                                    <li><a class="dropdown-item py-2" asp-area="Admin" asp-controller="Company" asp-action="Index"><i class="fa-solid fa-building me-2 text-success"></i> Companies</a></li>
+                                    <li><a class="dropdown-item py-2" asp-area="Admin" asp-controller="User" asp-action="Index"><i class="fa-solid fa-user-shield me-2 text-danger"></i> User Accounts</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item ms-lg-1">
+                                <a class="nav-link text-white fw-medium px-3 bg-navy-hover rounded" asp-area="Admin" asp-controller="Order" asp-action="Index">
+                                    <i class="fa-solid fa-boxes-packing me-1 text-fk-yellow"></i> Orders Portal
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    <!-- Desktop Right Widgets: Wishlist, Cart & Login -->
+                    <div class="d-none d-lg-flex align-items-center gap-2">
+                        <!-- Desktop Wishlist Button -->
+                        <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index" class="btn btn-fk-cart d-flex align-items-center text-white text-decoration-none px-3 py-2 rounded-pill position-relative me-1">
+                            <i class="fa-regular fa-heart fs-5 me-2 text-fk-yellow"></i>
+                            <span class="fw-bold fs-6">Wishlist</span>
+                            @if (wishlistCount > 0)
+                            {
+                                <span class="badge bg-warning text-dark font-mono ms-2 px-2 py-1 rounded-pill fw-extrabold shadow-sm">
+                                    @wishlistCount
+                                </span>
+                            }
+                        </a>
+
+                        <!-- Desktop Cart Button -->
+                        <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="btn btn-fk-cart d-flex align-items-center text-white text-decoration-none px-3 py-2 rounded-pill position-relative">
+                            <i class="fa-solid fa-cart-shopping fs-5 me-2 text-fk-yellow"></i>
+                            <span class="fw-bold fs-6">Cart</span>
+                            <span class="badge bg-warning text-dark font-mono ms-2 px-2 py-1 rounded-pill fw-extrabold shadow-sm">
+                                @cartCount
+                            </span>
+                        </a>
+
+                        <partial name="_LoginPartial" />
+                    </div>
+
+                    <!-- Mobile Login Section -->
+                    <div class="d-lg-none pt-2 border-top border-secondary mt-2">
+                        <partial name="_LoginPartial" />
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+
+        <!-- Secondary Sub-Header Category Ribbon (Desktop only) -->
+        <div class="bg-white border-bottom py-2 d-none d-md-block shadow-2xs">
+            <div class="container-fluid px-lg-5">
+                <div class="d-flex align-items-center justify-content-between text-secondary fs-7">
+                    <div class="d-flex gap-4 fw-medium">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="text-dark text-decoration-none hover-primary">
+                            <i class="fa-solid fa-fire text-danger me-1"></i> Best Sellers
+                        </a>
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="text-dark text-decoration-none hover-primary">
+                            <i class="fa-solid fa-bolt text-warning me-1"></i> Flash Deals
+                        </a>
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="text-dark text-decoration-none hover-primary">
+                            <i class="fa-solid fa-graduation-cap text-info me-1"></i> Academic & Textbooks
+                        </a>
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="text-dark text-decoration-none hover-primary">
+                            <i class="fa-solid fa-feather text-success me-1"></i> Fiction & Literature
+                        </a>
+                    </div>
+                    <div class="d-flex gap-3 text-muted">
+                        <span><i class="fa-solid fa-truck-fast text-primary me-1"></i> Free Shipping Available</span>
+                        <span><i class="fa-solid fa-shield-halved text-success me-1"></i> 100% Genuine Books</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Body Container -->
+    <main role="main" class="min-vh-100 py-3 py-md-4">
+        <div class="container-fluid px-2 px-sm-3 px-lg-5">
+            @RenderBody()
+        </div>
+    </main>
+
+    <!-- Mobile Bottom Fixed Navigation Bar (Flipkart / Amazon App Style) -->
+    <div class="mobile-bottom-nav d-md-none fixed-bottom bg-white border-top shadow-lg z-3">
+        <div class="d-flex justify-content-around align-items-center py-2">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="text-center text-decoration-none text-dark flex-fill">
+                <i class="fa-solid fa-house fs-5 text-primary d-block mb-1"></i>
+                <span class="fs-9 font-medium">Home</span>
+            </a>
+
+            <a asp-area="Customer" asp-controller="Wishlist" asp-action="Index" class="text-center text-decoration-none text-dark flex-fill position-relative">
+                <div class="position-relative d-inline-block">
+                    <i class="fa-regular fa-heart fs-5 text-warning d-block mb-1"></i>
+                    @if (wishlistCount > 0)
+                    {
+                        <span class="position-absolute top-0 start-100 translate-middle badge bg-warning text-dark rounded-circle font-mono" style="font-size: 9px; padding: 2px 4px;">
+                            @wishlistCount
+                        </span>
+                    }
+                </div>
+                <span class="fs-9 font-medium d-block">Wishlist</span>
+            </a>
+
+            <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="text-center text-decoration-none text-dark flex-fill position-relative">
+                <div class="position-relative d-inline-block">
+                    <i class="fa-solid fa-cart-shopping fs-5 text-warning d-block mb-1"></i>
+                    @if (cartCount > 0)
+                    {
+                        <span class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-circle font-mono" style="font-size: 9px; padding: 2px 4px;">
+                            @cartCount
+                        </span>
+                    }
+                </div>
+                <span class="fs-9 font-medium d-block">Cart</span>
+            </a>
+
+            @if (User.IsInRole(SD.Role_Admin))
+            {
+                <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="text-center text-decoration-none text-dark flex-fill">
+                    <i class="fa-solid fa-boxes-packing fs-5 text-info d-block mb-1"></i>
+                    <span class="fs-9 font-medium">Orders</span>
+                </a>
+            }
+
+            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="text-center text-decoration-none text-dark flex-fill">
+                <i class="fa-solid fa-user fs-5 text-secondary d-block mb-1"></i>
+                <span class="fs-9 font-medium">Account</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Modern Footer -->
+    <footer class="bg-fk-navy text-white pt-5 pb-4 mt-5 border-top border-secondary d-none d-md-block">
+        <div class="container-fluid px-lg-5">
+            <div class="row g-4 pb-4 border-bottom border-dark-subtle">
+                <div class="col-12 col-md-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="brand-icon-box me-2 bg-primary text-white rounded d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+                        <span class="fw-bold fs-4 text-white">Book<span class="text-fk-yellow">Kart</span></span>
+                    </div>
+                    <p class="text-slate-400 fs-7 mb-3">Your destination for millions of best-selling titles, academic textbooks, rare classics, and fast door-step deliveries nationwide.</p>
+                </div>
+
+                <div class="col-6 col-md-2">
+                    <h6 class="text-uppercase fw-bold text-fk-yellow fs-7 mb-3">ABOUT</h6>
+                    <ul class="list-unstyled fs-7 text-slate-400 d-flex flex-column gap-2 mb-0">
+                        <li><a href="#" class="text-slate-400 text-decoration-none hover-white">Contact Us</a></li>
+                        <li><a href="#" class="text-slate-400 text-decoration-none hover-white">About Us</a></li>
+                        <li><a href="#" class="text-slate-400 text-decoration-none hover-white">Careers</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-2">
+                    <h6 class="text-uppercase fw-bold text-fk-yellow fs-7 mb-3">HELP & SUPPORT</h6>
+                    <ul class="list-unstyled fs-7 text-slate-400 d-flex flex-column gap-2 mb-0">
+                        <li><a href="#" class="text-slate-400 text-decoration-none hover-white">Payments</a></li>
+                        <li><a href="#" class="text-slate-400 text-decoration-none hover-white">Shipping</a></li>
+                        <li><a href="#" class="text-slate-400 text-decoration-none hover-white">Cancellation & Returns</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-2">
+                    <h6 class="text-uppercase fw-bold text-fk-yellow fs-7 mb-3">CONSUMER POLICY</h6>
+                    <ul class="list-unstyled fs-7 text-slate-400 d-flex flex-column gap-2 mb-0">
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-slate-400 text-decoration-none hover-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-slate-400 text-decoration-none hover-white">Terms Of Use</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-2">
+                    <h6 class="text-uppercase fw-bold text-fk-yellow fs-7 mb-3">PAYMENT PARTNERS</h6>
+                    <div class="d-flex flex-wrap gap-2 text-slate-400 fs-4">
+                        <i class="fa-brands fa-cc-visa text-white"></i>
+                        <i class="fa-brands fa-cc-mastercard text-white"></i>
+                        <i class="fa-brands fa-cc-stripe text-info"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center pt-3 text-slate-400 fs-7">
+                <p class="mb-0">&copy; 2026 BookKart.com. All Rights Reserved. • Developed by Paras Dhiman</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://kit.fontawesome.com/e19c476714.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

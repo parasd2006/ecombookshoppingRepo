@@ -1,0 +1,45 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav align-items-center flex-row gap-2">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-white fw-semibold bg-navy-hover rounded px-3 py-2 d-flex align-items-center gap-2" href="#" id="userAccountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="user-avatar-circle bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 28px; height: 28px; font-size: 13px;">
+                @(User.Identity?.Name?.Substring(0, 1).ToUpper() ?? "U")
+            </div>
+            <span class="fs-7">@User.Identity?.Name</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark border-0 shadow-lg mt-2" aria-labelledby="userAccountDropdown">
+            <li>
+                <a class="dropdown-item py-2 d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/Index">
+                    <i class="fa-solid fa-user me-2 text-info"></i> Manage Account
+                </a>
+            </li>
+            <li><hr class="dropdown-divider border-secondary my-1"></li>
+            <li>
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="dropdown-item py-2 text-danger d-flex align-items-center w-100 bg-transparent border-0">
+                        <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="btn btn-outline-light btn-sm font-medium px-3 py-1-5 rounded text-white" asp-area="Identity" asp-page="/Account/Login">
+            <i class="fa-solid fa-right-to-bracket me-1 text-fk-yellow"></i> Login
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="btn btn-warning btn-sm font-semibold px-3 py-1-5 rounded text-dark shadow-sm" asp-area="Identity" asp-page="/Account/Register">
+            Sign Up
+        </a>
+    </li>
+}
+</ul>

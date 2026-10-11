@@ -1,0 +1,95 @@
+@model ecom_bookshopping_1003.Models.Company
+
+@{
+    var title = Model.Id != 0 ? "Edit Company Account" : "Register New Company";
+    ViewData["Title"] = title + " - Admin";
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+        <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-5">
+            <div class="card-header bg-white border-bottom py-3 px-4 d-flex align-items-center justify-content-between">
+                <h4 class="fw-extrabold text-dark mb-0">
+                    <i class="fa-solid fa-building text-primary me-2"></i> @title
+                </h4>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm font-semibold">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Back to List
+                </a>
+            </div>
+
+            <div class="card-body p-4 p-lg-5">
+                <form method="post">
+                    @if (Model.Id != 0)
+                    {
+                        <input type="hidden" asp-for="Id" />
+                    }
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3 fs-7"></div>
+
+                    <div class="row g-3">
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="Name" class="form-label fw-bold text-dark fs-7">Company Name</label>
+                            <input asp-for="Name" class="form-control" placeholder="Company Full Legal Name" />
+                            <span asp-validation-for="Name" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="PhoneNumber" class="form-label fw-bold text-dark fs-7">Phone Number</label>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="Company Contact Phone" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label asp-for="StreetAddress" class="form-label fw-bold text-dark fs-7">Street Address</label>
+                            <input asp-for="StreetAddress" class="form-control" placeholder="Registered office street address" />
+                            <span asp-validation-for="StreetAddress" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-12 col-sm-4">
+                            <label asp-for="City" class="form-label fw-bold text-dark fs-7">City</label>
+                            <input asp-for="City" class="form-control" placeholder="City" />
+                            <span asp-validation-for="City" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-12 col-sm-4">
+                            <label asp-for="State" class="form-label fw-bold text-dark fs-7">State</label>
+                            <input asp-for="State" class="form-control" placeholder="State" />
+                            <span asp-validation-for="State" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-12 col-sm-4">
+                            <label asp-for="PostalCode" class="form-label fw-bold text-dark fs-7">Postal Code</label>
+                            <input asp-for="PostalCode" class="form-control" placeholder="Pincode" />
+                            <span asp-validation-for="PostalCode" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-12 my-3 p-3 bg-light rounded border">
+                            <div class="form-check form-switch mb-0">
+                                <input asp-for="IsAuthorizedCompany" class="form-check-input" type="checkbox" style="cursor: pointer; width: 40px; height: 20px;" />
+                                <label class="form-check-label font-bold text-dark ms-2 pt-1" style="cursor: pointer;">
+                                    Authorized Corporate Account (Eligible for 30-Day Net Delayed Payment)
+                                </label>
+                            </div>
+                            <span asp-validation-for="IsAuthorizedCompany" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            @if (Model.Id != 0)
+                            {
+                                <partial name="_EditAndBackToListButton" />
+                            }
+                            else
+                            {
+                                <partial name="_CreateAndBackToListButton" />
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

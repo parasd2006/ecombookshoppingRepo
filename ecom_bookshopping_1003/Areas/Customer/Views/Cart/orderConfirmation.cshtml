@@ -1,0 +1,45 @@
+﻿@model int
+
+@{
+    ViewData["Title"] = "Order Confirmation";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 text-center p-4 p-md-5">
+
+                <!-- Success Checkmark Icon -->
+                <div class="mb-4">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded-circle" style="width: 85px; height: 85px;">
+                        <i class="bi bi-check-circle-fill" style="font-size: 3rem;"></i>
+                    </div>
+                </div>
+
+                <!-- Main Message -->
+                <h2 class="fw-bold text-dark mb-2">Order Confirmed!</h2>
+                <p class="text-muted mb-4">
+                    Thank you for your purchase. We have received your payment and are getting your books ready for dispatch!
+                </p>
+
+                <!-- Order Details Card -->
+                <div class="bg-light rounded-3 p-3 mb-4">
+                    <span class="text-secondary small d-block">YOUR ORDER ID</span>
+                    <span class="fs-4 fw-bold text-primary">#@Model</span>
+                </div>
+
+                <p class="small text-muted mb-4">
+                    Order confirmation email has been sent to your registered email address.
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">
+                        <i class="bi bi-cart-plus me-1"></i> Continue Shopping
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

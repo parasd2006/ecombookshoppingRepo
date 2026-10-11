@@ -1,0 +1,119 @@
+@model IEnumerable<ecom_bookshopping_1003.Models.OrderHeader>
+
+@{
+    ViewData["Title"] = "Order Management - Admin";
+}
+
+<div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-4">
+    
+    <!-- Card Header -->
+    <div class="card-header bg-white border-bottom py-3 px-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div>
+            <h4 class="fw-extrabold text-dark mb-0">
+                <i class="fa-solid fa-boxes-packing text-primary me-2"></i> All Orders Management
+            </h4>
+            <span class="fs-7 text-muted">View, filter, track and process customer order fulfillments</span>
+        </div>
+
+        <!-- Datewise Filter Form -->
+        <form method="get" asp-action="Index" class="d-flex flex-wrap align-items-center gap-2 m-0">
+            <div class="d-flex align-items-center gap-1">
+                <label class="form-label text-muted fw-bold mb-0 fs-8">From:</label>
+                <input type="date" id="startDate" name="startDate" value="@ViewBag.StartDate" class="form-control form-control-sm py-1" style="max-width: 140px;" />
+            </div>
+            
+            <div class="d-flex align-items-center gap-1">
+                <label class="form-label text-muted fw-bold mb-0 fs-8">To:</label>
+                <input type="date" id="endDate" name="endDate" value="@ViewBag.EndDate" class="form-control form-control-sm py-1" style="max-width: 140px;" />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm font-semibold px-3 py-1">
+                <i class="fa-solid fa-magnifying-glass me-1"></i> Filter
+            </button>
+
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm font-medium px-2 py-1" title="Reset Filters">
+                <i class="fa-solid fa-rotate-right"></i> Reset
+            </a>
+        </form>
+    </div>
+
+    <!-- Table Body -->
+    <div class="card-body p-4">
+        <div class="table-responsive rounded border">
+            <table class="table table-hover table-striped align-middle mb-0 w-100">
+                <thead class="table-dark fs-7">
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date & Time</th>
+                        <th>Customer Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Amount Total</th>
+                        <th class="text-center">Order Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-5">
+                                <i class="fa-solid fa-box-open display-4 d-block opacity-25 mb-2"></i>
+                                <span>No orders found for the selected date range.</span>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="badge bg-navy text-white font-mono fs-7">#@item.Id</span>
+                                </td>
+                                <td class="fs-7 text-secondary">
+                                    <i class="fa-regular fa-calendar-check text-muted me-1"></i>
+                                    @item.OrderDate.ToString("dd MMM yyyy, hh:mm tt")
+                                </td>
+                                <td class="fw-bold text-dark fs-7">
+                                    @(item.ApplicationUser?.Name ?? item.Name)
+                                </td>
+                                <td class="fs-7 text-muted">
+                                    @(item.ApplicationUser?.Email ?? "-")
+                                </td>
+                                <td class="fs-7 text-muted">
+                                    @(item.PhoneNumber ?? item.ApplicationUser?.PhoneNumber ?? "-")
+                                </td>
+                                <td class="fw-extrabold text-success fs-6">
+                                    $@item.OrderTotal.ToString("N2")
+                                </td>
+                                <td class="text-center">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary px-3 rounded-pill fw-bold fs-8">
+                                        <i class="fa-solid fa-eye me-1"></i> View Details
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var startInput = document.getElementById("startDate");
+        var endInput = document.getElementById("endDate");
+
+        if (startInput.value) {
+            endInput.min = startInput.value;
+        }
+
+        startInput.addEventListener("change", function () {
+            endInput.min = this.value;
+            if (endInput.value && endInput.value < this.value) {
+                endInput.value = "";
+            }
+        });
+    });
+</script>

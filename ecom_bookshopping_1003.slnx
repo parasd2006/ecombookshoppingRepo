@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ecom_bookshopping_1003.DataAccess/ecom_bookshopping_1003.DataAccess.csproj" />
+  <Project Path="ecom_bookshopping_1003.Models/ecom_bookshopping_1003.Models.csproj" />
+  <Project Path="ecom_bookshopping_1003.Utility/ecom_bookshopping_1003.Utility.csproj" />
+  <Project Path="ecom_bookshopping_1003/ecom_bookshopping_1003.csproj" />
+</Solution>

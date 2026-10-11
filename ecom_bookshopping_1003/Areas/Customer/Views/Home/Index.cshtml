@@ -1,0 +1,295 @@
+@model IEnumerable<ecom_bookshopping_1003.Models.ViewModels.ProductVM>
+
+@{
+    ViewData["Title"] = "Online Bookstore - Best Sellers & Deals";
+}
+
+<!-- Hero Banner / 3D Animated Promotional Carousel Slider -->
+<div id="heroPromotionalCarousel" class="carousel slide carousel-fade mb-4 rounded-3 overflow-hidden shadow-sm" data-bs-ride="carousel" data-bs-interval="4500">
+    <div class="carousel-indicators mb-2">
+        <button type="button" data-bs-target="#heroPromotionalCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#heroPromotionalCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#heroPromotionalCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    
+    <div class="carousel-inner">
+        
+        <!-- Slide 1: Bestsellers & Free Shipping -->
+        <div class="carousel-item active" style="background: linear-gradient(135deg, #172337 0%, #2874f0 100%);">
+            <div class="card-body p-4 p-md-5 text-white">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-8">
+                        <span class="badge bg-warning text-dark font-mono px-3 py-1-5 rounded-pill mb-2 fw-bold text-uppercase fs-8 shadow-2xs">
+                            <i class="fa-solid fa-fire me-1"></i> Mega Book Fair 2026
+                        </span>
+                        <h1 class="display-6 fw-extrabold mb-2 tracking-tight">Explore Millions of Bestsellers</h1>
+                        <p class="fs-6 text-slate-300 mb-3">Get up to <strong class="text-fk-yellow">40% OFF</strong> on volume orders + Free Express Delivery nationwide!</p>
+                        <a href="#productTable" class="btn btn-fk-buy px-4 py-2 rounded-pill font-bold shadow-sm">
+                            <i class="fa-solid fa-cart-shopping me-1"></i> Shop Bestsellers Now
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-4 text-md-end mt-3 mt-md-0 d-none d-md-block">
+                        <div class="d-inline-flex align-items-center gap-3 bg-white bg-opacity-10 p-3 rounded-3 backdrop-blur border border-white border-opacity-10">
+                            <i class="fa-solid fa-truck-fast text-fk-yellow fs-1"></i>
+                            <div class="text-start">
+                                <div class="fw-bold fs-6">Fast Doorstep Shipping</div>
+                                <div class="fs-7 text-slate-300">Dispatched in 24 Hours</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: B2B Corporate Volume Pricing -->
+        <div class="carousel-item" style="background: linear-gradient(135deg, #0f172a 0%, #0284c7 100%);">
+            <div class="card-body p-4 p-md-5 text-white">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-8">
+                        <span class="badge bg-info text-dark font-mono px-3 py-1-5 rounded-pill mb-2 fw-bold text-uppercase fs-8 shadow-2xs">
+                            <i class="fa-solid fa-building me-1"></i> Corporate & Bulk Discounts
+                        </span>
+                        <h1 class="display-6 fw-extrabold mb-2 tracking-tight">Buy In Bulk & Save Huge</h1>
+                        <p class="fs-6 text-slate-300 mb-3">Tiered bulk discounts for schools, companies, and libraries with 30-day net payment options.</p>
+                        <a href="#productTable" class="btn btn-warning text-dark px-4 py-2 rounded-pill font-bold shadow-sm">
+                            <i class="fa-solid fa-tags me-1"></i> View Volume Pricing
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-4 text-md-end mt-3 mt-md-0 d-none d-md-block">
+                        <div class="d-inline-flex align-items-center gap-3 bg-white bg-opacity-10 p-3 rounded-3 backdrop-blur border border-white border-opacity-10">
+                            <i class="fa-solid fa-layer-group text-fk-yellow fs-1"></i>
+                            <div class="text-start">
+                                <div class="fw-bold fs-6">Tiered Quantity Rates</div>
+                                <div class="fs-7 text-slate-300">Up to 100+ Unit Pricing</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Clearance Sale Bonus -->
+        <div class="carousel-item" style="background: linear-gradient(135deg, #450a0a 0%, #dc2626 100%);">
+            <div class="card-body p-4 p-md-5 text-white">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-8">
+                        <span class="badge bg-white text-danger font-mono px-3 py-1-5 rounded-pill mb-2 fw-bold text-uppercase fs-8 shadow-2xs">
+                            <i class="fa-solid fa-bolt me-1"></i> Clearance Flash Sale
+                        </span>
+                        <h1 class="display-6 fw-extrabold mb-2 tracking-tight">Flat Extra 10% OFF At Checkout</h1>
+                        <p class="fs-6 text-slate-200 mb-3">Limited period clearance offer automatically applied on selected classic titles.</p>
+                        <a href="#productTable" class="btn btn-light text-danger px-4 py-2 rounded-pill font-bold shadow-sm">
+                            <i class="fa-solid fa-percent me-1"></i> Grab Flash Deals
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-4 text-md-end mt-3 mt-md-0 d-none d-md-block">
+                        <div class="d-inline-flex align-items-center gap-3 bg-white bg-opacity-10 p-3 rounded-3 backdrop-blur border border-white border-opacity-10">
+                            <i class="fa-solid fa-gift text-fk-yellow fs-1"></i>
+                            <div class="text-start">
+                                <div class="fw-bold fs-6">Instant Checkout Coupon</div>
+                                <div class="fs-7 text-slate-200">Auto Applied in Cart</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Carousel Nav Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroPromotionalCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon p-2 bg-dark bg-opacity-50 rounded-circle" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroPromotionalCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon p-2 bg-dark bg-opacity-50 rounded-circle" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- Main Datatable Container -->
+<table id="productTable" class="product-data-table">
+    <thead>
+        <tr>
+            <th>Card</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>SearchText</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            var discountPercent = product.product.ListPrice > 0 
+                ? (int)Math.Round(((product.product.ListPrice - product.product.Price100) / product.product.ListPrice) * 100)
+                : 0;
+
+            <tr>
+                <td>
+                    <div class="book-card">
+                        
+                        <!-- Image Container with Badges -->
+                        <div class="book-image-wrapper">
+                            <img src="@product.product.Imageurl"
+                                 class="book-image"
+                                 alt="@product.product.Title" />
+
+                            <span class="book-badge">
+                                BOOK
+                            </span>
+
+                            @if (discountPercent > 0)
+                            {
+                                <span class="position-absolute top-0 end-0 bg-danger text-white fw-bold fs-9 px-2 py-1 m-2 rounded shadow-2xs">
+                                    @(discountPercent)% OFF
+                                </span>
+                            }
+                        </div>
+
+                        <!-- Card Body Content -->
+                        <div class="book-info">
+                            
+                            <!-- Star Rating Snippet -->
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <div class="book-rating-badge">
+                                    <span>4.5</span>
+                                    <i class="fa-solid fa-star fs-9 ms-1"></i>
+                                </div>
+                                <span class="text-muted fs-8">(128 reviews)</span>
+                            </div>
+
+                            <!-- Title & Author -->
+                            <h5 class="book-title" title="@product.product.Title">
+                                @product.product.Title
+                            </h5>
+
+                            <p class="book-author">
+                                <span>by</span> @product.product.Author
+                            </p>
+
+                            <!-- Price Display Section -->
+                            <div class="mt-auto">
+                                <div class="price-section">
+                                    <span class="current-price">
+                                        $@product.product.Price100.ToString("0.00")
+                                    </span>
+                                    
+                                    @if (product.product.ListPrice > product.product.Price100)
+                                    {
+                                        <span class="old-price">
+                                            $@product.product.ListPrice.ToString("0.00")
+                                        </span>
+                                    }
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <span class="text-muted fs-8">
+                                        As low as: <strong class="text-dark">$@product.product.Price100.ToString("0.00")</strong>
+                                    </span>
+                                    <span class="sold-badge">
+                                        <i class="fa-solid fa-bag-shopping me-1"></i> @product.SoldCount Sold
+                                    </span>
+                                </div>
+
+                                <!-- View Details Action CTA -->
+                                <a asp-action="Details"
+                                   asp-route-id="@product.product.Id"
+                                   class="book-details-btn">
+                                    <span>View Details</span>
+                                    <i class="fa-solid fa-arrow-right fs-7 ms-1"></i>
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </td>
+
+                <!-- Hidden columns for DataTables search indexing -->
+                <td>@product.product.Title</td>
+                <td>@product.product.Author</td>
+                <td>@product.product.Title @product.product.Author</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            var productTable = $("#productTable").DataTable({
+                pageLength: 8,
+                paging: true,
+                ordering: false,
+                dom: '<"product-top">rt<"product-bottom"ip>',
+                columnDefs: [
+                    { targets: 1, visible: false },
+                    { targets: 2, visible: false },
+                    { targets: 3, visible: false }
+                ],
+                language: {
+                    info: "Showing _START_ to _END_ of _TOTAL_ books",
+                    infoEmpty: "No products available",
+                    zeroRecords: "No matching books found",
+                    paginate: {
+                        previous: "<i class='fa-solid fa-chevron-left'></i> Previous",
+                        next: "Next <i class='fa-solid fa-chevron-right'></i>"
+                    }
+                }
+            });
+
+            $(".product-top").html(`
+                <div class="custom-search">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-filter text-primary"></i>
+                        <label class="search-by-label">Filter By:</label>
+                        <select id="searchType" class="search-type-dropdown">
+                            <option value="all">All Fields</option>
+                            <option value="title">Book Title</option>
+                            <option value="author">Author Name</option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-2 flex-grow-1 justify-content-end">
+                        <div class="position-relative flex-grow-1" style="max-width: 450px;">
+                            <i class="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <input type="text"
+                                   id="productSearch"
+                                   class="product-search-input ps-5 w-100"
+                                   placeholder="Search by title, author or keyword..." />
+                        </div>
+                        <button type="button" id="searchButton" class="search-button">
+                            <i class="fa-solid fa-magnifying-glass me-1"></i> Search
+                        </button>
+                    </div>
+                </div>
+            `);
+
+            $(document).on("click", "#searchButton", function (event) {
+                event.preventDefault();
+                var searchText = $("#productSearch").val().trim();
+                var searchType = $("#searchType").val();
+
+                productTable.columns().search("");
+
+                if (searchType === "all") {
+                    productTable.column(3).search(searchText);
+                } else if (searchType === "title") {
+                    productTable.column(1).search(searchText);
+                } else if (searchType === "author") {
+                    productTable.column(2).search(searchText);
+                }
+                productTable.draw();
+            });
+
+            $(document).on("keypress", "#productSearch", function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    $("#searchButton").trigger("click");
+                }
+            });
+        });
+    </script>
+}

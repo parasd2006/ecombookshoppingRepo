@@ -1,0 +1,172 @@
+@model ecom_bookshopping_1003.Models.ViewModels.ProductVM
+@{
+    var title = Model.product.Id != 0 ? "Edit Product Listing" : "Create New Book";
+    ViewData["Title"] = title + " - Admin";
+}
+
+<div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-5">
+    <div class="card-header bg-white border-bottom py-3 px-4 d-flex align-items-center justify-content-between">
+        <h4 class="fw-extrabold text-dark mb-0">
+            <i class="fa-solid fa-pen-to-square text-primary me-2"></i> @title
+        </h4>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm font-semibold">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to List
+        </a>
+    </div>
+
+    <div class="card-body p-4 p-lg-5">
+        <form method="post" enctype="multipart/form-data">
+            <div class="row g-4">
+                
+                <!-- Left Side: Form Controls -->
+                <div class="col-12 col-lg-8">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3 fs-7"></div>
+                    
+                    @if (Model.product.Id != 0)
+                    {
+                        <input type="hidden" asp-for="product.Id" />
+                    }
+
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <label asp-for="product.Title" class="form-label fw-bold fs-7"></label>
+                            <input asp-for="product.Title" class="form-control" placeholder="Book Title" />
+                            <span asp-validation-for="product.Title" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label asp-for="product.Name" class="form-label fw-bold fs-7"></label>
+                            <input asp-for="product.Name" class="form-control" placeholder="Book Short Name / Code" />
+                            <span asp-validation-for="product.Name" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label asp-for="product.Author" class="form-label fw-bold fs-7"></label>
+                            <input asp-for="product.Author" class="form-control" placeholder="Author Name" />
+                            <span asp-validation-for="product.Author" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label asp-for="product.ISBN" class="form-label fw-bold fs-7"></label>
+                            <input asp-for="product.ISBN" class="form-control" placeholder="ISBN Number" />
+                            <span asp-validation-for="product.ISBN" class="text-danger fs-8"></span>
+                        </div>
+
+                        <!-- Pricing Inputs Grid -->
+                        <div class="col-6 col-md-3">
+                            <label asp-for="product.ListPrice" class="form-label fw-bold fs-7">List Price ($)</label>
+                            <input asp-for="product.ListPrice" class="form-control" placeholder="0.00" />
+                            <span asp-validation-for="product.ListPrice" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <label asp-for="product.Price" class="form-label fw-bold fs-7">Price (1-49)</label>
+                            <input asp-for="product.Price" class="form-control" placeholder="0.00" />
+                            <span asp-validation-for="product.Price" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <label asp-for="product.Price50" class="form-label fw-bold fs-7">Price (50-99)</label>
+                            <input asp-for="product.Price50" class="form-control" placeholder="0.00" />
+                            <span asp-validation-for="product.Price50" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <label asp-for="product.Price100" class="form-label fw-bold fs-7">Price (100+)</label>
+                            <input asp-for="product.Price100" class="form-control text-success fw-bold" placeholder="0.00" />
+                            <span asp-validation-for="product.Price100" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label asp-for="product.CategoryId" class="form-label fw-bold fs-7">Category</label>
+                            <select asp-for="product.CategoryId" asp-items="@Model.CategoryList" class="form-select">
+                                <option value="">-- Select Category --</option>
+                            </select>
+                            <span asp-validation-for="product.CategoryId" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label asp-for="product.CoverTypeId" class="form-label fw-bold fs-7">Cover Type</label>
+                            <select asp-for="product.CoverTypeId" asp-items="@Model.CoverTypeList" class="form-select">
+                                <option value="">-- Select Cover Type --</option>
+                            </select>
+                            <span asp-validation-for="product.CoverTypeId" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label asp-for="product.Imageurl" class="form-label fw-bold fs-7">Upload Cover Image</label>
+                            <input type="file" name="files" id="uploadImage" class="form-control" />
+                        </div>
+
+                        <div class="col-12">
+                            <label asp-for="product.Description" class="form-label fw-bold fs-7">Full Book Description</label>
+                            <textarea asp-for="product.Description" class="form-control" rows="5"></textarea>
+                            <span asp-validation-for="product.Description" class="text-danger fs-8"></span>
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            @if (Model.product.Id != 0)
+                            {
+                                <partial name="_EditAndBackToListButton" />
+                            }
+                            else
+                            {
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm" onclick="return valData()">
+                                            <i class="fa-solid fa-floppy-disk me-1"></i> Save Book
+                                        </button>
+                                    </div>
+                                    <div class="col-6">
+                                        <a asp-action="Index" class="btn btn-outline-secondary w-100 py-2 fw-semibold">
+                                            <i class="fa-solid fa-arrow-left me-1"></i> Back To List
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Cover Image Preview Container -->
+                <div class="col-12 col-lg-4 text-center">
+                    <div class="p-3 bg-light rounded border sticky-top" style="top: 90px;">
+                        <h6 class="fw-bold text-muted text-uppercase fs-8 mb-3">Cover Preview</h6>
+                        @if (!string.IsNullOrEmpty(Model.product.Imageurl))
+                        {
+                            <img src="@Model.product.Imageurl" class="img-fluid rounded border shadow-sm" style="max-height: 350px; object-fit: contain;" alt="Preview" />
+                        }
+                        else
+                        {
+                            <div class="py-5 text-muted">
+                                <i class="fa-solid fa-image display-3 d-block opacity-25 mb-2"></i>
+                                <span class="fs-7">No image uploaded yet</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.tiny.cloud/1/62gvw77wdb0ras594qigq5m5exb410cpgpkjekbs87diwsnx/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+        function valData() {
+            if (document.getElementById("uploadImage").value == "") {
+                swal("Error", "Please select a cover image for the book", "error");
+                return false;
+            }
+            return true;
+        }
+        tinymce.init({
+            selector: "textarea",
+            plugins: "lists",
+            menubar: "file edit format"
+        });
+    </script>
+}
